@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#fef9f0" />
+<title>Flip 7 Vengeance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800;9..144,900&family=Inter:wght@500;600;700;800;900&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Flip 7 official-ish palette */
+    --paper: #fef9f0;
+    --paper-2: #fff5e1;
+    --cream: #fceedb;
+    --ink: #1a1a1a;
+    --ink-soft: #2d2d2d;
+    --muted: #6b6258;
+
+    /* Vibrant card colors */
+    --c-red: #e63946;
+    --c-red-dk: #c41e2e;
+    --c-orange: #ff8c42;
+    --c-orange-dk: #e6701f;
+    --c-yellow: #ffd23f;
+    --c-yellow-dk: #f0b800;
+    --c-lime: #95d13c;
+    --c-lime-dk: #6fa823;
+    --c-teal: #2ec4b6;
+    --c-teal-dk: #1a9b8e;
+    --c-blue: #3a86ff;
+    --c-blue-dk: #1f5fd9;
+    --c-purple: #8338ec;
+    --c-purple-dk: #5e1fb8;
+    --c-pink: #ff5d9e;
+    --c-pink-dk: #e63883;
+
+    --shadow-card: 0 3px 0 rgba(26,26,26,0.15), 0 6px 14px rgba(26,26,26,0.08);
+    --shadow-press: 0 2px 0 rgba(26,26,26,0.15), 0 3px 8px rgba(26,26,26,0.08);
+    --shadow-pop: 0 4px 0 rgba(26,26,26,0.2), 0 12px 24px rgba(26,26,26,0.12);
+    --radius: 14px;
+    --radius-sm: 10px;
+    --radius-lg: 22px;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background:
+      radial-gradient(circle at 10% 0%, rgba(255,210,63,0.15), transparent 40%),
+      radial-gradient(circle at 90% 30%, rgba(58,134,255,0.12), transparent 40%),
+      radial-gradient(circle at 50% 90%, rgba(255,93,158,0.10), transparent 40%),
+      var(--paper);
+    background-attachment: fixed;
+  }
+
+  /* Decorative dot pattern */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, rgba(26,26,26,0.06) 1px, transparent 1px);
+    background-size: 24px 24px;
+    opacity: 0.5;
+    z-index: 0;
+  }
+
+  .app {
+    position: relative;
+    z-index: 1;
+    max-width: 540px;
+    margin: 0 auto;
+    padding: 18px 14px 130px;
+  }
+
+  /* === HEADER === */
+  header {
+    text-align: center;
+    margin-bottom: 22px;
+    position: relative;
+  }
+  .header-badges {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .badge-mini {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--ink);
+    box-shadow: 0 2px 0 rgba(26,26,26,0.15);
+  }
+  .badge-mini:nth-child(1) { background: var(--c-red); }
+  .badge-mini:nth-child(2) { background: var(--c-yellow); transform: translateY(-3px); }
+  .badge-mini:nth-child(3) { background: var(--c-teal); }
+  .badge-mini:nth-child(4) { background: var(--c-pink); transform: translateY(-3px); }
+  .badge-mini:nth-child(5) { background: var(--c-blue); }
+
+  .title-stack {
+    display: inline-block;
+    position: relative;
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(56px, 18vw, 80px);
+    line-height: 0.85;
+    margin: 0;
+    color: var(--ink);
+    letter-spacing: -0.04em;
+    position: relative;
+    text-shadow:
+      3px 3px 0 var(--c-yellow),
+      4px 4px 0 var(--ink);
+  }
+  h1 .seven {
+    display: inline-block;
+    color: var(--c-red);
+    font-style: italic;
+    transform: rotate(-4deg);
+    margin-left: 4px;
+    text-shadow:
+      3px 3px 0 var(--c-yellow),
+      4px 4px 0 var(--ink);
+  }
+  .vengeance-tag {
+    display: inline-block;
+    margin-top: 12px;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 12px;
+    letter-spacing: 0.5em;
+    padding: 8px 18px 8px 24px;
+    border-radius: 100px;
+    transform: rotate(-1.5deg);
+    box-shadow: 3px 3px 0 var(--c-red);
+  }
+  .vengeance-tag .star {
+    color: var(--c-yellow);
+    margin-right: 4px;
+  }
+
+  /* === ROUND BAR === */
+  .round-bar {
+    display: flex;
+    align-items: stretch;
+    margin-bottom: 16px;
+    background: var(--paper-2);
+    border: 2.5px solid var(--ink);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+  }
+  .round-meta {
+    flex: 1;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .round-num-block {
+    background: var(--c-yellow);
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-sm);
+    padding: 4px 12px;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .round-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    color: var(--ink);
+    text-transform: uppercase;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+  .round-num {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-style: italic;
+    font-size: 24px;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .target-info {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    line-height: 1.3;
+  }
+  .target-info b {
+    color: var(--ink);
+    font-weight: 900;
+    font-size: 14px;
+    background: var(--c-pink);
+    padding: 2px 6px;
+    border-radius: 6px;
+    border: 2px solid var(--ink);
+    display: inline-block;
+    margin-top: 2px;
+  }
+  .round-actions {
+    display: flex;
+    border-left: 2.5px solid var(--ink);
+  }
+  .icon-btn {
+    background: var(--paper);
+    border: none;
+    border-left: 2px solid var(--ink);
+    color: var(--ink);
+    width: 46px;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .icon-btn:first-child { border-left: none; }
+  .icon-btn:active { background: var(--c-yellow); }
+
+  /* === BANNER === */
+  .banner {
+    display: none;
+    background: var(--c-yellow);
+    border: 3px solid var(--ink);
+    border-radius: var(--radius-lg);
+    padding: 22px 16px;
+    margin-bottom: 18px;
+    text-align: center;
+    box-shadow: var(--shadow-pop);
+    position: relative;
+    transform: rotate(-1deg);
+  }
+  .banner.show { display: block; animation: bannerIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .banner .crown {
+    font-size: 36px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .banner .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: var(--ink);
+    text-transform: uppercase;
+    font-weight: 800;
+  }
+  .banner .winner {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 36px;
+    font-weight: 900;
+    margin: 4px 0;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .banner .score-final {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-weight: 700;
+    letter-spacing: 0.15em;
+  }
+  @keyframes bannerIn {
+    0% { opacity: 0; transform: rotate(-1deg) scale(0.85); }
+    100% { opacity: 1; transform: rotate(-1deg) scale(1); }
+  }
+
+  /* === STANDINGS === */
+  .standings {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .standing {
+    background: var(--paper-2);
+    border: 2.5px solid var(--ink);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    position: relative;
+    box-shadow: var(--shadow-card);
+  }
+  .standing:active { transform: translate(2px, 2px); box-shadow: var(--shadow-press); }
+  .standing.active {
+    background: var(--c-yellow);
+    box-shadow: 0 4px 0 rgba(26,26,26,0.25), 0 12px 24px rgba(255,210,63,0.4);
+    transform: translate(-1px, -2px);
+  }
+  .standing.leading::before {
+    content: '\2605';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 24px;
+    height: 24px;
+    background: var(--c-red);
+    color: var(--paper);
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 0 var(--ink);
+    font-weight: 700;
+  }
+  .standing-name {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+  .standing-score {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 26px;
+    color: var(--ink);
+    line-height: 1;
+    margin-top: 4px;
+  }
+  .standing-pending {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-top: 4px;
+    height: 12px;
+  }
+  .standing-pending.bust {
+    color: var(--c-red);
+    font-weight: 900;
+  }
+  .standing-pending.flip7 {
+    color: var(--c-orange-dk);
+    font-weight: 900;
+  }
+
+  /* === ROSTER BAR === */
+  .roster-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .roster-btn {
+    flex: 1;
+    background: var(--paper);
+    border: 2.5px solid var(--ink);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    padding: 11px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: transform 0.15s, box-shadow 0.15s;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-card);
+  }
+  .roster-btn:active { transform: translate(2px, 2px); box-shadow: var(--shadow-press); }
+  .roster-btn.add { background: var(--c-lime); }
+  .roster-btn.manage { background: var(--c-blue); color: var(--paper); }
+
+  /* === ACTIVE PANEL === */
+  .active-panel {
+    background: var(--paper-2);
+    border: 3px solid var(--ink);
+    border-radius: var(--radius-lg);
+    padding: 18px 16px 16px;
+    margin-bottom: 22px;
+    position: relative;
+    box-shadow: var(--shadow-pop);
+  }
+  .active-panel::before {
+    content: 'NOW PLAYING';
+    position: absolute;
+    top: -12px;
+    left: 16px;
+    background: var(--c-red);
+    color: var(--paper);
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.25em;
+    padding: 4px 10px;
+    border: 2.5px solid var(--ink);
+    border-radius: 100px;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .active-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 2.5px dashed var(--ink);
+  }
+  .player-name-input {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 800;
+    font-size: 30px;
+    color: var(--ink);
+    border: none;
+    background: transparent;
+    padding: 0;
+    flex: 1;
+    min-width: 0;
+    outline: none;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .player-name-input:focus { color: var(--c-red); }
+
+  .round-score-display {
+    flex-shrink: 0;
+    background: var(--c-yellow);
+    border: 2.5px solid var(--ink);
+    border-radius: var(--radius-sm);
+    padding: 6px 14px;
+    text-align: center;
+    box-shadow: 2px 2px 0 var(--ink);
+    transition: background 0.2s;
+  }
+  .round-score-display.bust { background: var(--c-red); color: var(--paper); }
+  .round-score-display.flip7 { background: var(--c-orange); }
+  .round-score-display .score-num {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 28px;
+    line-height: 1;
+    color: inherit;
+  }
+  .round-score-display .label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 7px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-top: 3px;
+    font-weight: 700;
+    opacity: 0.8;
+  }
+
+  /* === CARD LINE === */
+  .card-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+    min-height: 64px;
+    padding: 10px;
+    background: var(--cream);
+    border: 2.5px dashed var(--ink);
+    border-radius: var(--radius);
+    align-items: center;
+  }
+  .card-line:empty::before {
+    content: 'Tap cards below to add';
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: var(--muted);
+    margin: 0 auto;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    font-style: italic;
+  }
+
+  .placed-card {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 44px;
+    padding: 0 10px;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 18px;
+    font-weight: 900;
+    background: var(--paper);
+    color: var(--ink);
+    border: 2.5px solid var(--ink);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    box-shadow: 2px 2px 0 var(--ink);
+    animation: cardPlace 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes cardPlace {
+    0% { opacity: 0; transform: translateY(-10px) scale(0.7) rotate(-15deg); }
+    100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
+  }
+  .placed-card:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+  .placed-card.modifier {
+    background: var(--c-yellow);
+    color: var(--ink);
+  }
+  .placed-card.negmod {
+    background: var(--c-red);
+    color: var(--paper);
+  }
+  .placed-card.special {
+    background: var(--c-purple);
+    color: var(--paper);
+  }
+  .placed-card.duplicate {
+    box-shadow: 0 0 0 3px var(--c-red), 2px 2px 0 var(--ink);
+    animation: shake 0.5s;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-4px) rotate(-2deg); }
+    40% { transform: translateX(4px) rotate(2deg); }
+    60% { transform: translateX(-2px) rotate(-1deg); }
+    80% { transform: translateX(2px) rotate(1deg); }
+  }
+
+  /* === STATUS FLAGS === */
+  .status-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .status-flag {
+    flex: 1;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    padding: 9px 6px;
+    border: 2.5px solid var(--ink);
+    color: var(--ink);
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: transform 0.15s, box-shadow 0.15s;
+    background: var(--paper);
+    border-radius: var(--radius-sm);
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .status-flag:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ink); }
+  .status-flag.active.bust {
+    background: var(--c-red);
+    color: var(--paper);
+  }
+  .status-flag.active.flip7 {
+    background: var(--c-orange);
+    color: var(--ink);
+  }
+  .status-flag.active.locked {
+    background: var(--c-lime);
+    color: var(--ink);
+  }
+
+  /* === BREAKDOWN === */
+  .breakdown {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-soft);
+    background: var(--paper);
+    padding: 10px 12px;
+    border: 2px solid var(--ink);
+    border-radius: var(--radius-sm);
+    line-height: 1.7;
+    font-weight: 600;
+  }
+  .breakdown .row { display: flex; justify-content: space-between; gap: 8px; }
+  .breakdown .row span:first-child { color: var(--muted); }
+  .breakdown .row span:last-child { color: var(--ink); font-weight: 700; }
+  .breakdown .row.total {
+    border-top: 2px dashed var(--ink);
+    margin-top: 6px;
+    padding-top: 6px;
+    font-size: 13px;
+  }
+  .breakdown .row.total span:first-child { color: var(--ink); font-weight: 800; }
+  .breakdown .row.total span:last-child { color: var(--c-red); font-weight: 900; }
+  .breakdown .row.total.bust span:last-child { color: var(--c-red); }
+
+  /* === PALETTE === */
+  .palette-section { margin-bottom: 18px; }
+  .palette-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.25em;
+    color: var(--ink);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .palette-title::before {
+    content: '';
+    flex: 1;
+    height: 2.5px;
+    background: var(--ink);
+    border-radius: 2px;
+  }
+  .palette-title::after {
+    content: '';
+    flex: 1;
+    height: 2.5px;
+    background: var(--ink);
+    border-radius: 2px;
+  }
+
+  .number-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+  }
+  .num-card {
+    aspect-ratio: 5/7;
+    color: var(--ink);
+    border: 2.5px solid var(--ink);
+    border-radius: var(--radius-sm);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 22px;
+    font-weight: 900;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: transform 0.15s, box-shadow 0.15s;
+    user-select: none;
+    padding: 0;
+    box-shadow: 2px 2px 0 var(--ink);
+    overflow: hidden;
+  }
+  .num-card:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 var(--ink);
+  }
+  .num-card.disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    filter: saturate(0.4);
+  }
+  .num-card .num-val {
+    position: relative;
+    z-index: 1;
+    line-height: 1;
+  }
+  .num-card .corner {
+    position: absolute;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 800;
+    font-style: normal;
+    z-index: 2;
+    line-height: 1;
+    opacity: 0.7;
+  }
+  .num-card .corner.tl { top: 4px; left: 5px; }
+  .num-card .corner.br { bottom: 4px; right: 5px; transform: rotate(180deg); }
+  .num-card .count {
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 8px;
+    font-weight: 800;
+    font-family: 'JetBrains Mono', monospace;
+    font-style: normal;
+    z-index: 2;
+    background: rgba(255,255,255,0.7);
+    color: var(--ink);
+    padding: 1px 4px;
+    border-radius: 4px;
+    border: 1.5px solid var(--ink);
+    line-height: 1;
+  }
+
+  /* Color assignments per number value (matches Flip 7-style spectrum) */
+  .num-card.n0 { background: #f0f0f0; }
+  .num-card.n1 { background: #ffe0e0; }
+  .num-card.n2 { background: var(--c-pink); color: var(--paper); }
+  .num-card.n3 { background: var(--c-orange); }
+  .num-card.n4 { background: var(--c-yellow); }
+  .num-card.n5 { background: var(--c-lime); }
+  .num-card.n6 { background: var(--c-teal); color: var(--paper); }
+  .num-card.n7 {
+    background: var(--c-red);
+    color: var(--paper);
+    box-shadow: 2px 2px 0 var(--ink), 0 0 0 1px var(--c-red);
+  }
+  .num-card.n8 { background: var(--c-blue); color: var(--paper); }
+  .num-card.n9 { background: var(--c-purple); color: var(--paper); }
+  .num-card.n10 { background: #ff6b9d; color: var(--paper); }
+  .num-card.n11 { background: #ffa838; }
+  .num-card.n12 { background: #c0e94f; }
+  .num-card.n13 {
+    background: linear-gradient(135deg, var(--c-yellow) 0%, var(--c-orange) 50%, var(--c-pink) 100%);
+    color: var(--ink);
+    box-shadow: 2px 2px 0 var(--ink), 0 0 0 1px var(--c-orange);
+  }
+
+  .num-card.n7::after {
+    content: '!';
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 18px;
+    height: 18px;
+    background: var(--c-yellow);
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-size: 12px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+  }
+  .num-card.n13::after {
+    content: '\2605';
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 18px;
+    height: 18px;
+    background: var(--c-yellow);
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    font-style: normal;
+    font-size: 10px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+  }
+
+  /* === MODIFIER CARDS === */
+  .modifier-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+  .mod-card {
+    aspect-ratio: 1.3 / 1;
+    background: var(--c-yellow);
+    color: var(--ink);
+    border: 2.5px solid var(--ink);
+    border-radius: var(--radius-sm);
+    padding: 6px 4px;
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 18px;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.15s, box-shadow 0.15s;
+    user-select: none;
+    box-shadow: 2px 2px 0 var(--ink);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+  }
+  .mod-card.neg { background: var(--c-red); color: var(--paper); }
+  .mod-card.div { background: var(--c-purple); color: var(--paper); }
+  .mod-card.x2 { background: var(--c-pink); color: var(--paper); }
+  .mod-card:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 var(--ink);
+  }
+  .mod-card.disabled { opacity: 0.35; cursor: not-allowed; filter: saturate(0.4); }
+  .mod-card .mod-val { line-height: 1; font-size: 22px; }
+  .mod-card .label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-style: normal;
+    font-size: 7px;
+    letter-spacing: 0.15em;
+    opacity: 0.8;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  /* === ACTION BAR === */
+  .action-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 14px calc(16px + env(safe-area-inset-bottom));
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    background: linear-gradient(180deg, transparent 0%, var(--paper) 50%);
+    pointer-events: none;
+  }
+  .action-bar-inner {
+    max-width: 540px;
+    width: 100%;
+    display: flex;
+    gap: 8px;
+    pointer-events: auto;
+  }
+  .primary-btn {
+    flex: 1;
+    background: var(--c-red);
+    border: 3px solid var(--ink);
+    color: var(--paper);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 900;
+    font-size: 20px;
+    padding: 14px;
+    cursor: pointer;
+    box-shadow: 0 5px 0 var(--ink), 0 8px 16px rgba(230,57,70,0.3);
+    transition: transform 0.15s, box-shadow 0.15s;
+    letter-spacing: -0.01em;
+    border-radius: var(--radius);
+    position: relative;
+  }
+  .primary-btn:active {
+    transform: translate(0, 4px);
+    box-shadow: 0 1px 0 var(--ink), 0 2px 4px rgba(230,57,70,0.2);
+  }
+  .primary-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: var(--muted);
+    box-shadow: 0 5px 0 var(--ink);
+  }
+  .secondary-btn {
+    background: var(--paper-2);
+    border: 3px solid var(--ink);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    padding: 14px 18px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: transform 0.15s, box-shadow 0.15s;
+    border-radius: var(--radius);
+    box-shadow: 0 5px 0 var(--ink);
+  }
+  .secondary-btn:active {
+    transform: translate(0, 4px);
+    box-shadow: 0 1px 0 var(--ink);
+  }
+
+  /* === MODAL === */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(26,26,26,0.5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    animation: fadeIn 0.2s ease;
+    overflow-y: auto;
+  }
+  .modal-backdrop.show { display: flex; }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .modal {
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 500px;
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    padding: 20px 18px 22px;
+    box-shadow: 0 8px 0 var(--ink), 0 20px 40px rgba(26,26,26,0.3);
+    animation: slideUp 0.3s ease;
+    position: relative;
+    margin: auto;
+  }
+  .modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 2.5px dashed var(--ink);
+  }
+  .modal-title {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .modal-title .accent {
+    color: var(--paper);
+    background: var(--c-red);
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-size: 12px;
+    font-weight: 900;
+    padding: 3px 10px;
+    border: 2px solid var(--ink);
+    border-radius: 100px;
+    margin-left: 8px;
+    box-shadow: 2px 2px 0 var(--ink);
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .modal-close {
+    background: var(--paper);
+    border: 2.5px solid var(--ink);
+    color: var(--ink);
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    border-radius: 50%;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .modal-close:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ink); }
+
+  .roster-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .roster-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 12px;
+    background: var(--paper-2);
+    border: 2.5px solid var(--ink);
+    transition: background 0.2s;
+    border-radius: var(--radius-sm);
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .roster-row:focus-within { background: var(--c-yellow); }
+  .roster-row .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--paper);
+    background: var(--ink);
+    letter-spacing: 0.1em;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    font-weight: 800;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--ink);
+  }
+  .roster-row .name-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    border-bottom: 2px dashed var(--ink);
+    color: var(--ink);
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 800;
+    font-size: 19px;
+    padding: 4px 0;
+    outline: none;
+    min-width: 0;
+  }
+  .roster-row .name-input:focus { border-bottom-color: var(--c-red); }
+  .roster-row .total-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: 0.1em;
+    flex-shrink: 0;
+    padding: 5px 10px;
+    background: var(--c-yellow);
+    border: 2px solid var(--ink);
+    border-radius: 100px;
+  }
+  .roster-row .remove-x {
+    background: var(--paper);
+    border: 2.5px solid var(--ink);
+    color: var(--c-red);
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+    flex-shrink: 0;
+    border-radius: 50%;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+  .roster-row .remove-x:active {
+    background: var(--c-red);
+    color: var(--paper);
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 var(--ink);
+  }
+  .roster-row .remove-x.confirm {
+    background: var(--c-red);
+    color: var(--paper);
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    width: auto;
+    padding: 0 12px;
+    border-radius: 100px;
+  }
+  .roster-row .remove-x:disabled { opacity: 0.2; cursor: not-allowed; }
+
+  .modal-add-btn {
+    width: 100%;
+    background: var(--c-lime);
+    border: 2.5px solid var(--ink);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    padding: 14px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: transform 0.15s, box-shadow 0.15s;
+    margin-bottom: 14px;
+    border-radius: var(--radius-sm);
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .modal-add-btn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ink); }
+
+  .modal-footer-note {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: var(--muted);
+    text-align: center;
+    line-height: 1.6;
+    font-weight: 600;
+    font-style: italic;
+  }
+
+  /* === FOOTER === */
+  .hint {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: center;
+    margin: 14px 0 8px;
+    font-weight: 600;
+    font-style: italic;
+  }
+  footer {
+    text-align: center;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--ink);
+    margin-top: 16px;
+  }
+  footer .heart {
+    display: inline-block;
+    color: var(--c-red);
+    margin: 0 4px;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="header-badges">
+      <span class="badge-mini"></span>
+      <span class="badge-mini"></span>
+      <span class="badge-mini"></span>
+      <span class="badge-mini"></span>
+      <span class="badge-mini"></span>
+    </div>
+    <div class="title-stack">
+      <h1>Flip<span class="seven">7</span></h1>
+    </div>
+    <div><span class="vengeance-tag"><span class="star">&#9733;</span>VENGEANCE</span></div>
+  </header>
+
+  <div class="round-bar">
+    <div class="round-meta">
+      <div class="round-num-block">
+        <div class="round-label">Round</div>
+        <div class="round-num" id="round-num">I</div>
+      </div>
+      <div class="target-info">First to<br><b>200 pts</b></div>
+    </div>
+    <div class="round-actions">
+      <button class="icon-btn" id="undo-btn" title="Undo last round">&#8634;</button>
+      <button class="icon-btn" id="reset-btn" title="Reset game">&#10227;</button>
+    </div>
+  </div>
+
+  <div class="banner" id="banner">
+    <div class="crown">&#127942;</div>
+    <div class="label">Winner Winner</div>
+    <div class="winner" id="winner-name">&mdash;</div>
+    <div class="score-final" id="winner-score">&mdash;</div>
+  </div>
+
+  <div class="standings" id="standings"></div>
+  <div class="roster-bar">
+    <button class="roster-btn add" id="quick-add-btn">+ Add Player</button>
+    <button class="roster-btn manage" id="manage-roster-btn">Manage Roster</button>
+  </div>
+
+  <div class="active-panel" id="active-panel">
+    <div class="active-head">
+      <input class="player-name-input" id="active-name" type="text" maxlength="18" />
+      <div class="round-score-display" id="round-score">
+        <div class="score-num" id="round-score-num">0</div>
+        <span class="label">Round</span>
+      </div>
+    </div>
+    <div class="card-line" id="card-line"></div>
+    <div class="status-row">
+      <button class="status-flag" data-flag="bust" id="flag-bust">Busted</button>
+      <button class="status-flag" data-flag="flip7" id="flag-flip7">Flip 7</button>
+      <button class="status-flag" data-flag="locked" id="flag-locked">Stayed</button>
+    </div>
+    <div class="breakdown" id="breakdown"></div>
+  </div>
+
+  <div class="palette-section">
+    <div class="palette-title">Numbers</div>
+    <div class="number-grid" id="number-grid"></div>
+  </div>
+
+  <div class="palette-section">
+    <div class="palette-title">Modifiers</div>
+    <div class="modifier-grid" id="modifier-grid"></div>
+  </div>
+
+  <div class="hint">Tap to add &middot; tap placed card to remove &middot; Flip 7 auto-detects</div>
+
+  <footer>Vengeance Edition <span class="heart">&hearts;</span> Keep Score, Keep Grudges</footer>
+</div>
+
+<div class="modal-backdrop" id="roster-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Players<span class="accent" id="player-count">5</span></div>
+      <button class="modal-close" id="modal-close-btn" aria-label="Close">&#10005;</button>
+    </div>
+    <div class="roster-list" id="roster-list"></div>
+    <button class="modal-add-btn" id="modal-add-btn">+ Add Another Player</button>
+    <div class="modal-footer-note">Tap to rename &middot; Min 2 players</div>
+  </div>
+</div>
+
+<div class="action-bar">
+  <div class="action-bar-inner">
+    <button class="secondary-btn" id="clear-btn">Clear</button>
+    <button class="primary-btn" id="commit-btn">Lock In Round</button>
+  </div>
+</div>
+
+<script>
+  const ROMAN = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX','XXI','XXII','XXIII','XXIV','XXV'];
+  const TARGET = 200;
+  const STORAGE_KEY = 'flip7_vengeance_v5';
+
+  const NUMBER_CARDS = [
+    { val: 0, qty: 1 }, { val: 1, qty: 1 }, { val: 2, qty: 2 }, { val: 3, qty: 3 },
+    { val: 4, qty: 4 }, { val: 5, qty: 5 }, { val: 6, qty: 6 },
+    { val: 7, qty: 7, unlucky: true }, { val: 8, qty: 8 }, { val: 9, qty: 9 },
+    { val: 10, qty: 10 }, { val: 11, qty: 11 }, { val: 12, qty: 12 },
+    { val: 13, qty: 13, lucky: true }
+  ];
+
+  const MODIFIERS = [
+    { id: '+2', val: 2, type: 'add', label: '+2' },
+    { id: '+4', val: 4, type: 'add', label: '+4' },
+    { id: '+6', val: 6, type: 'add', label: '+6' },
+    { id: '+8', val: 8, type: 'add', label: '+8' },
+    { id: '+10', val: 10, type: 'add', label: '+10' },
+    { id: 'x2', val: 2, type: 'mult', label: 'x2' },
+    { id: '/2', val: 2, type: 'div', label: '\u00f72' },
+    { id: '-2', val: -2, type: 'add', label: '-2', neg: true },
+    { id: '-4', val: -4, type: 'add', label: '-4', neg: true },
+    { id: '-6', val: -6, type: 'add', label: '-6', neg: true },
+    { id: '-8', val: -8, type: 'add', label: '-8', neg: true },
+    { id: '-10', val: -10, type: 'add', label: '-10', neg: true }
+  ];
+
+  let state = {};
+
+  function lsSave() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+  }
+  function lsLoad() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) { state = JSON.parse(raw); return true; }
+    } catch(e) {}
+    return false;
+  }
+
+  function defaultState() {
+    state = {
+      players: [
+        { id: 1, name: 'Player 1', total: 0, history: [], current: emptyCurrent() },
+        { id: 2, name: 'Player 2', total: 0, history: [], current: emptyCurrent() },
+        { id: 3, name: 'Player 3', total: 0, history: [], current: emptyCurrent() },
+        { id: 4, name: 'Player 4', total: 0, history: [], current: emptyCurrent() }
+      ],
+      activeId: 1, round: 1, gameOver: false, undoStack: []
+    };
+  }
+  function emptyCurrent() {
+    return { numbers: [], modifiers: [], busted: false, flip7: false, locked: false };
+  }
+  function getActive() {
+    return state.players.find(p => p.id === state.activeId) || state.players[0];
+  }
+  function numberCount(arr, val) {
+    return arr.filter(n => n === val).length;
+  }
+
+  function computeScore(p) {
+    const c = p.current;
+    if (c.busted) return { total: 0, breakdown: [{ label: 'Busted', val: '0' }] };
+    const breakdown = [];
+    const numSum = c.numbers.reduce((s, n) => s + n, 0);
+    if (c.numbers.length) {
+      breakdown.push({ label: 'Numbers', val: c.numbers.join(' + ') + ' = ' + numSum });
+    }
+    let working = numSum;
+    if (c.modifiers.includes('/2')) {
+      working = Math.floor(working / 2);
+      breakdown.push({ label: 'Halve', val: '\u2192 ' + working });
+    }
+    if (c.modifiers.includes('x2')) {
+      working = working * 2;
+      breakdown.push({ label: 'Double', val: '\u2192 ' + working });
+    }
+    const adds = c.modifiers.filter(m => m !== '/2' && m !== 'x2');
+    if (adds.length) {
+      const addSum = adds.reduce((s, a) => {
+        const m = MODIFIERS.find(x => x.id === a);
+        return s + (m ? m.val : 0);
+      }, 0);
+      working += addSum;
+      breakdown.push({ label: 'Modifiers', val: adds.join(' ') + ' = ' + (addSum >= 0 ? '+' : '') + addSum });
+    }
+    if (c.flip7) {
+      working += 15;
+      breakdown.push({ label: 'Flip 7 bonus', val: '+15' });
+    }
+    if (working < 0) working = 0;
+    return { total: working, breakdown };
+  }
+
+  function render() {
+    document.getElementById('round-num').textContent = ROMAN[state.round - 1] || String(state.round);
+    renderStandings();
+    renderActivePanel();
+    renderNumberGrid();
+    renderModifierGrid();
+    renderBanner();
+  }
+
+  function renderStandings() {
+    const el = document.getElementById('standings');
+    el.innerHTML = '';
+    const maxTotal = Math.max(...state.players.map(p => p.total), 0);
+    const leaderId = (maxTotal > 0)
+      ? state.players.find(p => p.total === maxTotal).id
+      : null;
+
+    state.players.forEach(p => {
+      const div = document.createElement('div');
+      div.className = 'standing'
+        + (p.id === state.activeId ? ' active' : '')
+        + (p.id === leaderId ? ' leading' : '');
+      const c = p.current;
+      let pendingText = '';
+      let pendingClass = '';
+      if (c.busted) { pendingText = 'BUST'; pendingClass = 'bust'; }
+      else if (c.flip7) { pendingText = 'FLIP 7'; pendingClass = 'flip7'; }
+      else if (c.numbers.length || c.modifiers.length) {
+        const s = computeScore(p);
+        pendingText = '+' + s.total;
+      }
+      div.innerHTML =
+        '<div class="standing-name">' + escapeHtml(p.name) + '</div>' +
+        '<div class="standing-score">' + p.total + '</div>' +
+        '<div class="standing-pending ' + pendingClass + '">' + pendingText + '</div>';
+      div.addEventListener('click', () => {
+        state.activeId = p.id;
+        lsSave();
+        render();
+      });
+      el.appendChild(div);
+    });
+  }
+
+  function renderActivePanel() {
+    const p = getActive();
+    if (!p) return;
+    document.getElementById('active-name').value = p.name;
+
+    const lineEl = document.getElementById('card-line');
+    lineEl.innerHTML = '';
+
+    p.current.numbers.forEach((n, idx) => {
+      const card = document.createElement('div');
+      card.className = 'placed-card';
+      const count = numberCount(p.current.numbers, n);
+      const allowed = (n === 13) ? 2 : 1;
+      if (count > allowed) card.classList.add('duplicate');
+      card.textContent = n;
+      card.addEventListener('click', () => {
+        p.current.numbers.splice(idx, 1);
+        const unique = new Set(p.current.numbers).size;
+        if (unique < 7) p.current.flip7 = false;
+        let stillBusted = false;
+        const counts = {};
+        p.current.numbers.forEach(x => counts[x] = (counts[x] || 0) + 1);
+        for (const k in counts) {
+          const allowedHere = (parseInt(k,10) === 13) ? 2 : 1;
+          if (counts[k] > allowedHere) stillBusted = true;
+        }
+        if (!stillBusted) p.current.busted = false;
+        lsSave();
+        render();
+      });
+      lineEl.appendChild(card);
+    });
+
+    p.current.modifiers.forEach((mid, idx) => {
+      const m = MODIFIERS.find(x => x.id === mid);
+      if (!m) return;
+      const card = document.createElement('div');
+      card.className = 'placed-card modifier';
+      if (m.neg) card.classList.add('negmod');
+      if (mid === 'x2' || mid === '/2') card.classList.add('special');
+      card.textContent = m.label;
+      card.addEventListener('click', () => {
+        p.current.modifiers.splice(idx, 1);
+        lsSave();
+        render();
+      });
+      lineEl.appendChild(card);
+    });
+
+    document.getElementById('flag-bust').classList.toggle('active', p.current.busted);
+    document.getElementById('flag-flip7').classList.toggle('active', p.current.flip7);
+    document.getElementById('flag-locked').classList.toggle('active', p.current.locked);
+
+    const scoreObj = computeScore(p);
+    const scoreEl = document.getElementById('round-score');
+    scoreEl.classList.toggle('bust', p.current.busted);
+    scoreEl.classList.toggle('flip7', p.current.flip7);
+    document.getElementById('round-score-num').textContent = scoreObj.total;
+
+    const bdEl = document.getElementById('breakdown');
+    if (p.current.busted) {
+      bdEl.innerHTML = '<div class="row total bust"><span>Busted!</span><span>0</span></div>';
+    } else if (!p.current.numbers.length && !p.current.modifiers.length) {
+      bdEl.innerHTML = '<div class="row" style="opacity:0.6"><span>Awaiting cards...</span><span>0</span></div>';
+    } else {
+      let html = '';
+      scoreObj.breakdown.forEach(b => {
+        html += '<div class="row"><span>' + b.label + '</span><span>' + b.val + '</span></div>';
+      });
+      html += '<div class="row total"><span>Total</span><span>' + scoreObj.total + '</span></div>';
+      bdEl.innerHTML = html;
+    }
+  }
+
+  function renderNumberGrid() {
+    const p = getActive();
+    const grid = document.getElementById('number-grid');
+    grid.innerHTML = '';
+    NUMBER_CARDS.forEach(nc => {
+      const used = numberCount(p.current.numbers, nc.val);
+      const div = document.createElement('button');
+      div.className = 'num-card n' + nc.val;
+      const disabled = used >= nc.qty || p.current.busted;
+      if (disabled) div.classList.add('disabled');
+
+      div.innerHTML =
+        '<div class="corner tl">' + nc.val + '</div>' +
+        '<div class="num-val">' + nc.val + '</div>' +
+        '<div class="corner br">' + nc.val + '</div>' +
+        '<div class="count">' + used + '/' + nc.qty + '</div>';
+
+      div.addEventListener('click', () => {
+        if (disabled) return;
+        p.current.numbers.push(nc.val);
+        const unique = new Set(p.current.numbers).size;
+        if (unique >= 7 && !p.current.flip7) p.current.flip7 = true;
+        const totalSame = numberCount(p.current.numbers, nc.val);
+        const allowed = nc.lucky ? 2 : 1;
+        if (totalSame > allowed && !p.current.busted) {
+          p.current.busted = true;
+          p.current.flip7 = false;
+        }
+        lsSave();
+        render();
+      });
+      grid.appendChild(div);
+    });
+  }
+
+  function renderModifierGrid() {
+    const p = getActive();
+    const grid = document.getElementById('modifier-grid');
+    grid.innerHTML = '';
+    MODIFIERS.forEach(m => {
+      const used = p.current.modifiers.includes(m.id);
+      const btn = document.createElement('button');
+      btn.className = 'mod-card';
+      if (m.neg) btn.classList.add('neg');
+      if (m.id === '/2') btn.classList.add('div');
+      if (m.id === 'x2') btn.classList.add('x2');
+      if (used || p.current.busted) btn.classList.add('disabled');
+      const labelText = m.type === 'mult' ? 'Double' : m.type === 'div' ? 'Halve' : (m.neg ? 'Penalty' : 'Bonus');
+      btn.innerHTML = '<div class="mod-val">' + m.label + '</div><span class="label">' + labelText + '</span>';
+      btn.addEventListener('click', () => {
+        if (used || p.current.busted) return;
+        p.current.modifiers.push(m.id);
+        lsSave();
+        render();
+      });
+      grid.appendChild(btn);
+    });
+  }
+
+  function renderBanner() {
+    const banner = document.getElementById('banner');
+    if (state.gameOver) {
+      const winner = [...state.players].sort((a,b) => b.total - a.total)[0];
+      banner.classList.add('show');
+      document.getElementById('winner-name').textContent = winner.name;
+      document.getElementById('winner-score').textContent = winner.total + ' pts \u00b7 ' + (state.round - 1) + ' rounds';
+      document.getElementById('commit-btn').disabled = true;
+    } else {
+      banner.classList.remove('show');
+      document.getElementById('commit-btn').disabled = false;
+    }
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  document.getElementById('active-name').addEventListener('change', e => {
+    const p = getActive();
+    if (p) { p.name = e.target.value.trim() || 'Player'; lsSave(); render(); }
+  });
+  document.getElementById('active-name').addEventListener('focus', e => e.target.select());
+
+  document.querySelectorAll('.status-flag').forEach(el => {
+    el.addEventListener('click', () => {
+      const p = getActive();
+      if (!p) return;
+      const flag = el.dataset.flag;
+      if (flag === 'bust') {
+        p.current.busted = !p.current.busted;
+        if (p.current.busted) p.current.flip7 = false;
+      } else if (flag === 'flip7') {
+        p.current.flip7 = !p.current.flip7;
+        if (p.current.flip7) p.current.busted = false;
+      } else if (flag === 'locked') {
+        p.current.locked = !p.current.locked;
+      }
+      lsSave();
+      render();
+    });
+  });
+
+  function twoTapConfirm(btn, armedLabel, onConfirm) {
+    if (btn._armed) {
+      clearTimeout(btn._disarm);
+      btn._armed = false;
+      onConfirm();
+      return;
+    }
+    btn._armed = true;
+    btn._origLabel = btn.innerHTML;
+    btn.innerHTML = armedLabel;
+    btn._origBg = btn.style.background;
+    btn._origColor = btn.style.color;
+    btn.style.background = 'var(--c-red)';
+    btn.style.color = 'var(--paper)';
+    btn._disarm = setTimeout(() => {
+      btn._armed = false;
+      btn.innerHTML = btn._origLabel;
+      btn.style.background = btn._origBg;
+      btn.style.color = btn._origColor;
+    }, 2500);
+  }
+
+  document.getElementById('clear-btn').addEventListener('click', e => {
+    const p = getActive();
+    if (!p) return;
+    if (!(p.current.numbers.length || p.current.modifiers.length || p.current.busted || p.current.flip7)) return;
+    twoTapConfirm(e.currentTarget, 'Confirm?', () => {
+      p.current = emptyCurrent();
+      lsSave();
+      render();
+    });
+  });
+
+  function addNewPlayer() {
+    const newId = Math.max(0, ...state.players.map(p => p.id)) + 1;
+    state.players.push({
+      id: newId, name: 'Player ' + newId,
+      total: 0, history: [], current: emptyCurrent()
+    });
+    state.activeId = newId;
+    lsSave();
+    render();
+    return newId;
+  }
+
+  document.getElementById('quick-add-btn').addEventListener('click', addNewPlayer);
+
+  const rosterModal = document.getElementById('roster-modal');
+  const rosterList = document.getElementById('roster-list');
+
+  function openRosterModal() {
+    renderRosterList();
+    rosterModal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+    document.querySelector('.action-bar').style.display = 'none';
+  }
+  function closeRosterModal() {
+    rosterModal.classList.remove('show');
+    document.body.style.overflow = '';
+    document.querySelector('.action-bar').style.display = '';
+    render();
+  }
+
+  function renderRosterList() {
+    document.getElementById('player-count').textContent = state.players.length;
+    rosterList.innerHTML = '';
+    state.players.forEach((p, idx) => {
+      const row = document.createElement('div');
+      row.className = 'roster-row';
+      const canRemove = state.players.length > 2;
+      row.innerHTML =
+        '<span class="badge">' + (idx + 1) + '</span>' +
+        '<input type="text" class="name-input" value="' + escapeHtml(p.name) + '" maxlength="18" data-id="' + p.id + '" />' +
+        '<span class="total-pill">' + p.total + '</span>' +
+        '<button class="remove-x" data-id="' + p.id + '" ' + (canRemove ? '' : 'disabled') + ' title="Remove">&#10005;</button>';
+      rosterList.appendChild(row);
+    });
+
+    rosterList.querySelectorAll('.name-input').forEach(el => {
+      el.addEventListener('change', e => {
+        const id = +e.target.dataset.id;
+        const p = state.players.find(x => x.id === id);
+        if (p) {
+          p.name = e.target.value.trim() || 'Player';
+          lsSave();
+          if (state.activeId === id) {
+            document.getElementById('active-name').value = p.name;
+          }
+        }
+      });
+      el.addEventListener('focus', e => e.target.select());
+    });
+
+    rosterList.querySelectorAll('.remove-x').forEach(el => {
+      el.addEventListener('click', e => {
+        if (state.players.length <= 2) return;
+        const btn = e.currentTarget;
+        const id = +btn.dataset.id;
+
+        if (!btn.classList.contains('confirm')) {
+          rosterList.querySelectorAll('.remove-x.confirm').forEach(b => {
+            b.classList.remove('confirm');
+            b.innerHTML = '&#10005;';
+          });
+          btn.classList.add('confirm');
+          btn.textContent = 'Confirm?';
+          btn._disarmTimer = setTimeout(() => {
+            btn.classList.remove('confirm');
+            btn.innerHTML = '&#10005;';
+          }, 3000);
+          return;
+        }
+
+        clearTimeout(btn._disarmTimer);
+        const p = state.players.find(x => x.id === id);
+        if (!p) return;
+        state.players = state.players.filter(x => x.id !== id);
+        if (state.activeId === id) {
+          state.activeId = state.players[0].id;
+        }
+        lsSave();
+        renderRosterList();
+      });
+    });
+  }
+
+  document.getElementById('manage-roster-btn').addEventListener('click', openRosterModal);
+  document.getElementById('modal-close-btn').addEventListener('click', closeRosterModal);
+  rosterModal.addEventListener('click', e => {
+    if (e.target === rosterModal) closeRosterModal();
+  });
+  document.getElementById('modal-add-btn').addEventListener('click', () => {
+    addNewPlayer();
+    renderRosterList();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && rosterModal.classList.contains('show')) {
+      closeRosterModal();
+    }
+  });
+
+  document.getElementById('commit-btn').addEventListener('click', () => {
+    state.undoStack = state.undoStack || [];
+    state.undoStack.push(JSON.parse(JSON.stringify({
+      players: state.players, round: state.round,
+      gameOver: state.gameOver, activeId: state.activeId
+    })));
+    if (state.undoStack.length > 10) state.undoStack.shift();
+
+    state.players.forEach(p => {
+      const s = computeScore(p);
+      p.history.push({
+        score: s.total, busted: p.current.busted, flip7: p.current.flip7,
+        numbers: [...p.current.numbers], modifiers: [...p.current.modifiers]
+      });
+      p.total += s.total;
+      p.current = emptyCurrent();
+    });
+
+    state.round++;
+    if (state.players.some(p => p.total >= TARGET)) state.gameOver = true;
+
+    lsSave();
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.getElementById('undo-btn').addEventListener('click', () => {
+    state.undoStack = state.undoStack || [];
+    if (!state.undoStack.length) return;
+    const last = state.undoStack.pop();
+    state.players = last.players;
+    state.round = last.round;
+    state.gameOver = false;
+    state.activeId = last.activeId;
+    lsSave();
+    render();
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', e => {
+    twoTapConfirm(e.currentTarget, '!', () => {
+      const names = state.players.map(p => p.name);
+      defaultState();
+      state.players = names.map((n, i) => ({
+        id: i + 1, name: n, total: 0, history: [], current: emptyCurrent()
+      }));
+      state.activeId = 1;
+      lsSave();
+      render();
+    });
+  });
+
+  if (!lsLoad()) defaultState();
+  state.players.forEach(p => {
+    if (!p.current) p.current = emptyCurrent();
+    if (typeof p.total !== 'number') p.total = 0;
+    if (!p.history) p.history = [];
+  });
+  if (!state.undoStack) state.undoStack = [];
+  render();
+</script>
+</body>
+</html>
